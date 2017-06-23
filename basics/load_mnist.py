@@ -78,22 +78,28 @@ class DataUtils(object) :
 
 
 if "__main__" == __name__ :
-    pre_path = "./"
+    pre_path = "../dataset/MNIST/"
     out_path = "./unzipdata/"
     train_file_imgs = "train-images-idx3-ubyte"
     train_file_lbls = "train-labels-idx1-ubyte"
     test_file_imgs = "t10k-images-idx3-ubyte"
     test_file_lbls = "t10k-labels-idx1-ubyte"
+    """
     if not os.path.isdir(out_path) :
         os.mkdir(out_path)
     os.system("tar -zxvf " + pre_path + train_file_imgs + ".tar.gz -C " + out_path)
     os.system("tar -zxvf " + pre_path + train_file_lbls + ".tar.gz -C " + out_path)
     os.system("tar -zxvf " + pre_path + test_file_imgs + ".tar.gz -C " + out_path)
     os.system("tar -zxvf " + pre_path + test_file_lbls + ".tar.gz -C " + out_path)
+    """
 
-    #train_imgs = DataUtils(filename=out_path + train_file_imgs).getImage()
-    #train_lbls = DataUtils(filename=out_path + train_file_lbls).getLabel()
-    #test_imgs = DataUtils(filename=out_path + test_file_imgs).getImage()
-    #test_lbls = DataUtils(filename=out_path + test_file_lbls).getLabel()
+    train_imgs = DataUtils(filename=out_path + train_file_imgs).getImage()
+    train_lbls = DataUtils(filename=out_path + train_file_lbls).getLabel()
+    test_imgs = DataUtils(filename=out_path + test_file_imgs).getImage()
+    test_lbls = DataUtils(filename=out_path + test_file_lbls).getLabel()
+    print(train_imgs.shape)
+    print(train_lbls.shape)
+    print(test_imgs.shape)
+    print(test_lbls.shape)
     #DataUtils().outImage(train_imgs , train_lbls)
     #DataUtils().outImage(test_imgs , train_lbls)
