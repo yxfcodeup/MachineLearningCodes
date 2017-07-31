@@ -62,7 +62,7 @@ class Perceptron() :
             y = train_y[i]
             for _ in range(epoch) :
                 err = - y * self.predict(x , True)
-                if err < 0 :
+                if err > 0 :
                     break
                 delta = lr * y
                 self._w += delta * x    # w <-- w + lr * y * x
