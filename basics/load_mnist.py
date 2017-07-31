@@ -84,14 +84,12 @@ if "__main__" == __name__ :
     train_file_lbls = "train-labels-idx1-ubyte"
     test_file_imgs = "t10k-images-idx3-ubyte"
     test_file_lbls = "t10k-labels-idx1-ubyte"
-    """
     if not os.path.isdir(out_path) :
         os.mkdir(out_path)
     os.system("tar -zxvf " + pre_path + train_file_imgs + ".tar.gz -C " + out_path)
     os.system("tar -zxvf " + pre_path + train_file_lbls + ".tar.gz -C " + out_path)
     os.system("tar -zxvf " + pre_path + test_file_imgs + ".tar.gz -C " + out_path)
     os.system("tar -zxvf " + pre_path + test_file_lbls + ".tar.gz -C " + out_path)
-    """
 
     train_imgs = DataUtils(filename=out_path + train_file_imgs).getImage()
     train_lbls = DataUtils(filename=out_path + train_file_lbls).getLabel()
