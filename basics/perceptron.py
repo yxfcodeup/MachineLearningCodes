@@ -19,6 +19,7 @@ import math
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 # Custom Moduls
 from cv_tools import getHogFeature
@@ -39,16 +40,19 @@ class Perceptron() :
 
         for _ in range(epoch) :
             # compute w*x+b
-            err = -y * self.predict(x , True)
+            err = - y * self.predict(x , True)
             # 选出使得损失函数最大的样本
             idx = np.argmax(err)
             # 若该样本被正确分类，则结束训练
-            if err[idx] < 0 :
+            print("err: " , err , "idx: " , idx , "err[idx]: " , err[idx] , "x[idx]: " , x[idx] , "y[idx]: " , y[idx] , "delta: " , lr*y[idx] , "w: " , self._w , "b: " , self._b)
+            if err[idx] > 0 :
+                print("err: " , err , "idx: " , idx , "err[idx]: " , err[idx])
                 break
             # 否则，让参数沿着负梯度方向走一步
             delta = lr * y[idx]
             self._w += delta * x[idx]
             self._b += delta
+        return self._w , self._b
         
     def trainMNIST(self , train_x , train_y , lr=0.001 , epoch=1000) :
         train_x = np.array(train_x , np.float32)
@@ -79,6 +83,22 @@ class Perceptron() :
 
 
 if "__main__" == __name__ :
+    group = np.array([[3,3], [4,3], [1,1]])
+    labels = [1,1,-1]
+    pp = Perceptron()
+    w , b = pp.fit(group , labels)
+    line = np.array([[0,b] , [1,]])
+    plt.plot(group[:,0] , group[:,1] , 'k.')
+    #figure = plt.figure()
+    #ax = Axes3D(figure)
+    #X , Y = np.meshgrid(group[:,0] ,group[:,1])
+    X = group[:,0]
+    Y = group[:,1]
+    Z = np.array(labels)
+    #ax.plot_surface(X , Y , Z , rstride=1, cstride=1, cmap='rainbow')
+    #ax.scatter(X , Y , Z , c='r' , marker='^')
+    plt.show()
+    exit(1)
     pre_path = "../dataset/MNIST/"
     out_path = "./unzipdata/"
     train_file_imgs = "train-images-idx3-ubyte"
@@ -111,18 +131,32 @@ if "__main__" == __name__ :
     test_x = list()
     test_y = list()
     for i in range(train_lbls.shape[0]) :
-        if 3 == int(train_lbls[i]) or 4 == int(train_lbls[i]) :
-            tmp = getHogFeature(np.array(train_imgs[i]))
+        if 3 == int(train_lbls[i]) :
+            #tmp = getHogFeature(np.array(train_imgs[i]))
+            tmp = np.array(train_imgs[i])
             train_x.append(tmp)
-            train_y.append(train_lbls[i])
+            train_y.append(-1)
+        elif 4 == int(train_lbls[i]) :
+            #tmp = getHogFeature(np.array(train_imgs[i]))
+            tmp = np.array(train_imgs[i])
+            train_x.append(tmp)
+            train_y.append(1)
     for i in range(test_lbls.shape[0]) :
-        if 3 == int(test_lbls[i]) or 4 == int(test_lbls[i]) :
-            tmp = getHogFeature(np.array(test_imgs[i]))
+        if 3 == int(test_lbls[i]) :
+            #tmp = getHogFeature(np.array(test_imgs[i]))
+            tmp = np.array(test_imgs[i])
             test_x.append(tmp)
-            test_y.append(test_lbls[i])
-    train_x = np.reshape(np.array(train_x) , (-1 , 324))
+            test_y.append(-1)
+        elif 4 == int(test_lbls[i]) :
+            #tmp = getHogFeature(np.array(test_imgs[i]))
+            tmp = np.array(test_imgs[i])
+            test_x.append(tmp)
+            test_y.append(1)
+    #train_x = np.reshape(np.array(train_x) , (-1 , 324))
+    train_x = np.array(train_x)
     train_y = np.array(train_y)
-    test_x = np.reshape(np.array(test_x) , (-1 , 324))
+    #test_x = np.reshape(np.array(test_x) , (-1 , 324))
+    test_x = np.array(np.array(test_x))
     test_y = np.array(test_y)
     print(train_x.shape)
     print(train_y.shape)
@@ -130,6 +164,8 @@ if "__main__" == __name__ :
     print(test_y.shape)
     pp = Perceptron()
     w , b = pp.trainMNIST(train_x , train_y)
+    print("w: " , w)
+    print("b: " , b)
     preds = list()
     for i in range(test_x.shape[0]) :
         prd = pp.predict(test_x[i] , True)

@@ -101,3 +101,9 @@ if "__main__" == __name__ :
     print(test_lbls.shape)
     #DataUtils().outImage(train_imgs , train_lbls)
     #DataUtils().outImage(test_imgs , train_lbls)
+
+
+    #train_imgs_json = json.dumps(train_imgs)
+    #train_lbls_json = json.dumps(train_lbls)
+    #test_imgs_json = json.dumps(test_imgs)
+    #test_lbls_json = json.dumps(test_lbls)
